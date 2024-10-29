@@ -1,20 +1,21 @@
-import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import React, { useContext } from 'react';
+import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { TransactionsContext } from '../context/TransactionsContext';
 import TransactionItem from '../components/TransactionItem';
 
-const transactions = [
-  { id: '1', name: 'Grocery', amount: '$50', date: '2024-10-28' },
-  { id: '2', name: 'Rent', amount: '$1200', date: '2024-10-01' },
-];
-
 export default function TransactionsListScreen({ navigation }) {
+  const { transactions } = useContext(TransactionsContext);
+
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={transactions}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('TransactionDetail', { transaction: item })}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('TransactionDetail', { transaction: item })}
+            style={styles.card} 
+          >
             <TransactionItem transaction={item} />
           </TouchableOpacity>
         )}
@@ -22,3 +23,22 @@ export default function TransactionsListScreen({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f7fa',  
+    padding: 20,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 20,
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+});
